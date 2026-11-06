@@ -172,7 +172,7 @@ def run_sandboxed(argv: list[str], stdin_text: str, timeout: float) -> RunResult
         kill_tree(proc, job)
         out, err = proc.communicate()
     finally:
-        if job is not None:
+        if sys.platform == "win32" and job is not None:
             _close_job(job)
     return RunResult(
         stdout=out[:MAX_OUTPUT].decode("utf-8", errors="replace"),
