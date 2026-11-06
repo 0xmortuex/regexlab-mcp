@@ -1,0 +1,53 @@
+[project]
+name = "regexlab-mcp"
+version = "0.1.0"
+description = "MCP server that RUNS regular expressions in real engines (Python re, JavaScript via node, optional regex module) in a killable sandbox: test, explain, ReDoS-probe, compare, convert, replace-preview and self-verifying test suggestions."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "0xmortuex" }]
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=2.0.0",
+]
+keywords = ["mcp", "regex", "regexp", "redos", "backtracking", "testing", "ai-agent"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Text Processing",
+]
+
+[project.optional-dependencies]
+# Adds the third-party `regex` module as a third engine.
+regex = ["regex>=2024.1.1"]
+test = ["pytest>=7", "anyio", "regex>=2024.1.1"]
+
+[project.urls]
+Homepage = "https://github.com/0xmortuex/regexlab-mcp"
+
+[project.scripts]
+regexlab-mcp = "regexlab_mcp.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/regexlab_mcp"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+
+[[tool.mypy.overrides]]
+module = ["regex.*"]
+ignore_missing_imports = true
+
+[tool.mypy]
+# The runner scripts execute in a child interpreter and are deliberately untyped.
+exclude = ['_runner_py[.]py$']
